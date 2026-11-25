@@ -1,0 +1,198 @@
+// ContentFactory — Prisma schema (skeleton)
+// Архитектура: FSD по сущностям. 6 типов чанков (ядра + эталоны),
+// 5-тактная валидация, 3-слойное самообучение, промпт/учёт.
+// Статус: инициализация. Бизнес-логика добавляется позже.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────── ЧАНКИ (Этап 1) ───────────────────────────
+
+enum ChunkType {
+  knowledge
+  case
+  fact
+  voice
+  swipe
+  audience
+}
+
+enum ChunkStatus {
+  active
+  depleted
+  archived
+}
+
+model Chunk {
+  id            String        @id @default(cuid())
+  type          ChunkType
+  text          String
+  sourcePath    String?
+  sourceUrl     String?
+  addedAt       DateTime      @default(now())
+
+  // общие поля износа/использования
+  depletion     Float         @default(0)
+  bundleHits    Int           @default(0)
+  useCount      Int           @default(0)
+  lastUsedAt    DateTime?
+  status        ChunkStatus   @default(active)
+
+  // type-specific (единая схема + JSONB под тип)
+  topic         String?
+  facts         Json?
+  factEmbeddings Json?
+  factsUsed     Json?
+  cleaned       Boolean       @default(false)
+
+  fearClosed    Json?
+  steps         Json?
+  result        String?
+  incomeMilestone String?
+  cooldownUntil DateTime?
+  heroBio       String?
+  sourceProof   Json?
+
+  sScheme       String?
+  pillar        String?
+  markers       Json?
+  closingType   String?
+  isHumanFinal  Boolean       @default(false)
+
+  format        String?
+  whyItWorks    Json?
+  structure     Json?
+  patternsToBorrow Json?
+  doNotCopy     Json?
+
+  factText      String?
+  allowedContext String?
+  forbidden     Json?
+  numberValue   String?
+  period        String?
+
+  fearType      Int?
+  phrase        String?
+  emotion       String?
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([type, status])
+  @@index([pillar])
+}
+
+// ─────────────────────────── ПОСТЫ / ГЕНЕРАЦИИ ───────────────────────────
+
+enum PostType {
+  human
+  proof_case
+  method
+  trust
+  proof_path
+}
+
+enum Verdict {
+  pass
+  warn
+  fail
+}
+
+model Post {
+  id            String        @id @default(cuid())
+  type          PostType
+  topic         String?
+  draft         String
+  final         String?
+  verdict       Verdict?
+  tactFlags     Json?
+  metrics       Json?
+  fixHint       String?
+  promptVersion String?
+  styleVersion  String?
+  model         String?
+  chosen        Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  episodes      Episode[]
+
+  @@index([type, createdAt])
+}
+
+// ─────────────────────── ОБУЧЕНИЕ (Этап 3, 3 слоя) ───────────────────────
+
+enum RuleScope {
+  global
+  type
+}
+
+enum RuleStatus {
+  active
+  veto
+  candidate
+  exception
+}
+
+model Rule {
+  id            String        @id @default(cuid())
+  text          String
+  scope         RuleScope
+  type          PostType?
+  support       Int           @default(0)
+  conflict      Int           @default(0)
+  weightDelta   Json?
+  version       Int           @default(1)
+  status        RuleStatus    @default(candidate)
+  sourceEpisodes Json?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([scope, status])
+}
+
+model Weight {
+  id            String        @id @default(cuid())
+  metric        String        @unique
+  value         Float
+  history       Json?
+  updatedAt     DateTime      @updatedAt
+}
+
+model Episode {
+  id            String        @id @default(cuid())
+  postId        String
+  post          Post          @relation(fields: [postId], references: [id])
+  type          PostType
+  tactFlags     Json?
+  draft         String
+  final         String?
+  diff          Json?
+  choiceRank    Int?
+  metricsSnapshot Json?
+  ruleVersions  Json?
+  weightVersions Json?
+  createdAt     DateTime      @default(now())
+
+  @@index([postId])
+}
+
+// ─────────────────────────── БОТ / ИСТОЧНИКИ ───────────────────────────
+
+model Source {
+  id            String        @id @default(cuid())
+  telegramId    String?       @unique
+  rawText       String?
+  mediaFileId   String?
+  detectedType  ChunkType?
+  status        String        @default("received")
+  createdAt     DateTime      @default(now())
+
+  @@index([status])
+}
