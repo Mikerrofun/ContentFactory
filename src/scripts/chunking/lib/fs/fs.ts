@@ -1,14 +1,17 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import type { FactChunk, Report } from "../types";
+import type { Report } from "../types";
 
 export const CHUNKS_DIR = "data/chunks";
 
-export function writeChunkTree(type: string, chunks: FactChunk[]): void {
+export function writeChunkTree<T>(type: string, chunks: T[]): void {
   const dir = join(CHUNKS_DIR, type);
   if (existsSync(dir)) rmSync(dir, { recursive: true, force: true });
   mkdirSync(dir, { recursive: true });
-  for (const chunk of chunks) writeFileSync(join(dir, `${chunk.id}.json`), JSON.stringify(chunk, null, 2) + "\n", "utf8");
+  for (const chunk of chunks) {
+    const id = (chunk as { id: string }).id;
+    writeFileSync(join(dir, `${id}.json`), JSON.stringify(chunk, null, 2) + "\n", "utf8");
+  }
 }
 
 export function writeReport(type: string, report: Report): void {
@@ -29,13 +32,13 @@ export function writeReport(type: string, report: Report): void {
   writeFileSync(join(dir, "_report.md"), lines.join("\n"), "utf8");
 }
 
-export function readChunkTree(type: string): FactChunk[] {
+export function readChunkTree<T>(type: string): T[] {
   const dir = join(CHUNKS_DIR, type);
   if (!existsSync(dir)) return [];
-  const out: FactChunk[] = [];
+  const out: T[] = [];
   for (const file of readdirSync(dir)) {
     if (!file.endsWith(".json") || file.startsWith("_")) continue;
-    out.push(JSON.parse(readFileSync(join(dir, file), "utf8")) as FactChunk);
+    out.push(JSON.parse(readFileSync(join(dir, file), "utf8")) as T);
   }
   return out;
 }

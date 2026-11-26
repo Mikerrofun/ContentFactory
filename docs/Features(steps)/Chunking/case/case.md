@@ -110,7 +110,7 @@
 
 ## 7. Валидация
 
-Общая (`lib/validate/`) + case-специфика:
+Общая механика (`lib/fs/`, `lib/clean/`) + case-специфика в `case/validate.ts`:
 1. `id` уникальны (69).
 2. `text` непустой.
 3. Нет остаточного экранирования.
@@ -130,8 +130,8 @@ data/chunks/case/_report.md
 
 ## 9. Архитектура (переиспользуем)
 
-- Общее: `lib/clean/`, `lib/validate/`, `lib/fs/`, `lib/types.ts`, `src/shared/lib/net/with-retry.ts`.
-- Своё: `case/chunk.ts` (парс CASE.md → JSON), `case/load.ts` (upsert через `withRetry`).
+- Общее: `lib/clean/`, `lib/fs/` (generic), `lib/types.ts`, `src/shared/lib/net/with-retry.ts`.
+- Своё (per-type): `case/chunk.ts` (парс CASE.md → JSON), `case/load.ts` (upsert через `withRetry`), `case/validate.ts` (критерии case).
 - Диспетчеры `chunk.ts` / `load.ts` — добавить ветку `case`.
 
 ---

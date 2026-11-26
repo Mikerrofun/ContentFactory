@@ -1,6 +1,20 @@
-import type { FactChunk } from "../types";
-import { RESIDUAL_ESCAPE } from "../clean";
-import type { Criterion, Violation } from "./types";
+import type { FactChunk } from "../lib/types";
+import { RESIDUAL_ESCAPE } from "../lib/clean";
+
+export type Severity = "error" | "warn";
+
+export interface Violation {
+  criterion: string;
+  severity: Severity;
+  chunkId?: string;
+  message: string;
+}
+
+interface Criterion {
+  id: string;
+  severity: Severity;
+  check: (chunk: FactChunk) => string | null;
+}
 
 export const TEXT_CRITERIA: Criterion[] = [
   { id: "V1-residual-escape", severity: "error", check: (c) => (RESIDUAL_ESCAPE.test(c.text) ? "осталось экранирование markdown" : null) },

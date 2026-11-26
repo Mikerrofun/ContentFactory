@@ -21,7 +21,7 @@
 
 ### Общий слой `src/scripts/chunking/lib/`
 
-Подпапка на каждый файл: `clean/`, `validate/`, `fs/` (+ общий `types.ts`). Внутри подпапки — реализация + `types.ts` с типами + `index.ts` баррель (импорты снаружи не меняются).
+Подпапка на каждый файл: `clean/`, `fs/` (+ общий `types.ts`). Внутри подпапки — реализация + `types.ts` с типами + `index.ts` баррель (импорты снаружи не меняются). `validate` — не общий, лежит в `fact/validate.ts` (критерии зависят от типа).
 
 #### Очистка — `lib/clean/`
 
@@ -39,14 +39,14 @@ export const RESIDUAL_ESCAPE: RegExp                             // остато
 - Детерминированно: `clean(clean(x)) === clean(x)`.
 - Типы (`RuleResult`, `CleanStats`) — в `clean/types.ts`.
 
-#### Валидация — `lib/validate/`
+#### Валидация — `fact/validate.ts` (только для fact)
 
 ```ts
-// src/scripts/chunking/lib/validate/validate.ts
+// src/scripts/chunking/fact/validate.ts
 export function validateChunk(chunk: FactChunk): Violation[]
 export function validateSet(chunks: FactChunk[], expected?): Violation[]
 export function summarize(violations): { errors; warnings }
-// типы (Severity, Violation, Criterion) — в validate/types.ts
+// типы (Severity, Violation, Criterion) — здесь же.
 ```
 
 Критерии (независимая детекция, `severity: error | warn`):
@@ -66,13 +66,13 @@ export function summarize(violations): { errors; warnings }
 Структурные проверки: уникальность `id`, счётчики (`fact=71`, `PF=27`).
 Гейт `validate-chunks.ts` **отдельно** от чанкера: `exit 1` при errors → в БД не грузим. Проверяется результат, а не сам чанкер.
 
-#### Файловая система — `lib/fs/`
+#### Файловая система — `lib/fs/` (универсальная, generic)
 
 ```ts
 // src/scripts/chunking/lib/fs/fs.ts
-export function writeChunkTree(type, chunks): void   // rmSync + запись data/chunks/<type>/*.json
-export function readChunkTree(type): FactChunk[]      // чтение дерева для валидации/загрузки
-export function writeReport(type, report): void       // _report.md
+export function writeChunkTree<T>(type, chunks: T[]): void   // rmSync + запись data/chunks/<type>/*.json
+export function readChunkTree<T>(type): T[]                   // чтение дерева (generic, без привязки к типу)
+export function writeReport(type, report): void               // _report.md
 ```
 
 ### Общий системный слой `src/shared/lib/net/`

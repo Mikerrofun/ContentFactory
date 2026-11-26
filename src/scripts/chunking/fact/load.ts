@@ -6,7 +6,7 @@ import type { FactChunk } from "../lib/types";
 const APPLY = process.argv.includes("--apply");
 
 async function main() {
-  const chunks = readChunkTree("fact") as FactChunk[];
+  const chunks = readChunkTree<FactChunk>("fact");
   if (chunks.length === 0) {
     console.error("[load] нет чанков в data/chunks/fact — сначала запусти чанкер");
     process.exit(1);

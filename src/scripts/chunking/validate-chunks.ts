@@ -2,7 +2,7 @@
 // Читает data/chunks/<type> и проверяет каждый чанк. Exit 1 при ошибках.
 // Отдельно от чанкера: проверяет результат, а не сам себя.
 import { readChunkTree } from "./lib/fs";
-import { validateSet, summarize, type Violation } from "./lib/validate";
+import { validateSet, summarize, type Violation } from "./fact/validate";
 import type { FactChunk } from "./lib/types";
 
 const EXPECTED: Record<string, { fact?: number; pf?: number }> = {
@@ -11,7 +11,7 @@ const EXPECTED: Record<string, { fact?: number; pf?: number }> = {
 
 function main() {
   const type = process.argv[2] ?? "fact";
-  const chunks = readChunkTree(type) as FactChunk[];
+  const chunks = readChunkTree<FactChunk>(type);
 
   if (chunks.length === 0) {
     console.error(`[validate] нет чанков в data/chunks/${type} — сначала запусти чанкер`);
