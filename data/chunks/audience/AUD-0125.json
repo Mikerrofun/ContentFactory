@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0125",
+  "type": "audience",
+  "text": "Если сделать этот платеж по внутренней рассрочке и частями платить, допустим, в районе по 200 евро, вам бы это как-то спасло ситуацию",
+  "emotion": "триггер",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0168",
+  "type": "audience",
+  "text": "1--2 фразы аудитории встраивай **дословно** (особенно страх/возражение) --- это повышает узнавание.",
+  "emotion": "инструкция",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

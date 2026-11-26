@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0153",
+  "type": "audience",
+  "text": "У меня есть ноутбук, но нет проводного интернета --- я живу на работе, ухаживаю за пожилым человеком, а он не хочет проводить интернет",
+  "emotion": "ограничение",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0278",
+  "type": "audience",
+  "text": "«нет кнопки/кнопок», «статус отменён», «бронь отозвали», «не пришло на почту кроме чека», «предоплаты 3000».",
+  "emotion": "прочее",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

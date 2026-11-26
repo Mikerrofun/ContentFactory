@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0061",
+  "type": "audience",
+  "text": "Единственное, что не могу я сейчас оплатить, у меня пенсия только в понедельник",
+  "emotion": "возражение",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

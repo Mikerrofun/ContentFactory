@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0255",
+  "type": "audience",
+  "text": "много опечаток/слитных слов (автозамена, голосовой ввод), иногда мат/жёсткие оценки",
+  "emotion": "прочее",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

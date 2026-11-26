@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0133",
+  "type": "audience",
+  "text": "А если вы сделаете вот это, я сейчас ему перенаправлю и прям позвоню, попрошу, чтобы он посмотрел как можно быстрее",
+  "emotion": "триггер",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

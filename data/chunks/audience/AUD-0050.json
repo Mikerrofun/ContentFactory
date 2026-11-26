@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0050",
+  "type": "audience",
+  "text": "Наверное, я рассрочку возьму всё-таки, а не полностью оплатить, поэтому подумаю еще сегодня",
+  "emotion": "возражение",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

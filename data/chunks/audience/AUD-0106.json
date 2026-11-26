@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0106",
+  "type": "audience",
+  "text": "Посмотреть, потому что я давно хотела понять, как это делать, что это такое *(встречалось 2×)*",
+  "emotion": "триггер",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

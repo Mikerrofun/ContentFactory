@@ -44,6 +44,34 @@ export interface BestChunk {
   addedAt: string;
 }
 
+// Эмоция-категория чанка `audience` (детерминированно из секции AUDIENCE.md).
+export type AudienceEmotion =
+  | "страх"
+  | "возражение"
+  | "желание"
+  | "триггер"
+  | "ограничение"
+  | "инструкция"
+  | "лексика"
+  | "скрытый страх"
+  | "успокоитель"
+  | "красное слово"
+  | "CTA"
+  | "прочее";
+
+// Единый чанк `audience` (см. docs/Features(steps)/Chunking/audience/audiencePlan.md).
+// 1 фраза = 1 чанк. fearType/embedding — отдельные итерации (пока null).
+export interface AudienceChunk {
+  id: string;
+  type: "audience";
+  text: string;
+  emotion: AudienceEmotion | null;
+  fearType: number | null;
+  sourcePath: string;
+  embedding: null;
+  addedAt: string;
+}
+
 export interface Report {
   type: ChunkType;
   total: number;

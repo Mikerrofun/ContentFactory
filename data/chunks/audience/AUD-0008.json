@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0008",
+  "type": "audience",
+  "text": "У меня уже расход в этом месяце был, я нет, уже такую сумму не смогу расположить",
+  "emotion": "страх",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

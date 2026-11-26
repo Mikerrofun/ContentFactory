@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0251",
+  "type": "audience",
+  "text": "цели: «закрыть долги», «зубы/лечение», «жильё/ремонт», «помочь детям/внукам», «поехать на море/в Крым»",
+  "emotion": "прочее",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

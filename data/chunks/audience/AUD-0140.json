@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0140",
+  "type": "audience",
+  "text": "Дмитрий, мы звоним, так как вы у нас заявку оставляли вчера на участие в программе Фабрика доходного контента",
+  "emotion": "триггер",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

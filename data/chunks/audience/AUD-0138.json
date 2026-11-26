@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0138",
+  "type": "audience",
+  "text": "Даже уже те банки, вот, например, с Бербанком, я уже давно с ними работаю, как говорится, да, все, и вовремя не плачу",
+  "emotion": "триггер",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

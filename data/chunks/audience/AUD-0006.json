@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0006",
+  "type": "audience",
+  "text": "Если, значит, вот мне вот это интересно, подхожу или не подхожу, смогу или не смогу",
+  "emotion": "страх",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

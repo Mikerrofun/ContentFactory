@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0123",
+  "type": "audience",
+  "text": "Я вам звонила, так как вы у нас, получается, были на вебинаре по поводу фабрики доходного контента и внесли предоплату в размере 12 рублей",
+  "emotion": "триггер",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

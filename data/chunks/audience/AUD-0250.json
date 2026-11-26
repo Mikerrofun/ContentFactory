@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0250",
+  "type": "audience",
+  "text": "доходы часто «пенсия 15--40 тыс», «денег остаётся 7 тыс», долги/кредиты/ипотека",
+  "emotion": "прочее",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

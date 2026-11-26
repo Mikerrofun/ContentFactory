@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0238",
+  "type": "audience",
+  "text": "«нет карты», «карты заблокировали», упоминания блокировок по закону (люди не могут платить)",
+  "emotion": "прочее",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

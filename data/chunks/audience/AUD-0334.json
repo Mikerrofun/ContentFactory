@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0334",
+  "type": "audience",
+  "text": "\"Мне нужно отсюда уехать/убежать\" --- эмоциональная, кризисная лексика.",
+  "emotion": "прочее",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "AUD-0289",
+  "type": "audience",
+  "text": "«Не могу оплатить / не вижу кнопки / перевод не проходит / карта неименная / Казахстан (Kaspi) / PayPal» --- расширение карты платёжных проблем.",
+  "emotion": "прочее",
+  "fearType": null,
+  "sourcePath": "docs/Facts:Case:Best/AUDIENCE.md",
+  "embedding": null,
+  "addedAt": "2026-11-26T21:42:54.629Z"
+}
