@@ -14,6 +14,21 @@ export interface FactChunk {
   addedAt: string;
 }
 
+// Единый чанк `case` (см. docs/Features(steps)/Chunking/case/casePlan.md).
+export interface CaseChunk {
+  id: string;
+  type: "case";
+  text: string;
+  topic: string | null;
+  pillar: string | null;
+  sourcePath: string;
+  fearClosed: string[] | null;
+  depletion: number;
+  cooldownUntil: string | null;
+  embedding: null;
+  addedAt: string;
+}
+
 export interface Report {
   type: ChunkType;
   total: number;
@@ -22,7 +37,7 @@ export interface Report {
 }
 
 // Результат прогона чанкера.
-export interface ChunkRunResult {
-  chunks: FactChunk[];
+export interface ChunkRunResult<T = FactChunk> {
+  chunks: T[];
   report: Report;
 }
