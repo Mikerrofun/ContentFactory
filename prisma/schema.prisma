@@ -29,6 +29,12 @@ enum ChunkStatus {
   archived
 }
 
+enum CanPublish {
+  yes
+  partial
+  no
+}
+
 model Chunk {
   id            String        @id @default(cuid())
   type          ChunkType
@@ -76,6 +82,7 @@ model Chunk {
   forbidden     Json?
   numberValue   String?
   period        String?
+  canPublish    CanPublish?
 
   fearType      Int?
   phrase        String?

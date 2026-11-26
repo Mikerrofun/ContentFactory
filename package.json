@@ -14,7 +14,10 @@
     "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
     "bot": "tsx src/bot/run.ts",
-    "cron:index": "tsx src/cron/index.ts"
+    "cron:index": "tsx src/cron/index.ts",
+    "chunk": "tsx src/scripts/chunking/chunk.ts",
+    "chunk:validate": "tsx src/scripts/chunking/validate-chunks.ts",
+    "chunk:load": "tsx src/scripts/chunking/load.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.123",
