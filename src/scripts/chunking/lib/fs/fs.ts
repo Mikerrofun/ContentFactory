@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import type { FactChunk, Report } from "./types";
+import type { FactChunk, Report } from "../types";
 
 export const CHUNKS_DIR = "data/chunks";
 

@@ -1,0 +1,8 @@
+{
+  "id": "PF-0008",
+  "type": "fact",
+  "text": "в последний месяц работы официантом Роман получил 4 000 ₽ и уволился. Источник: `knowledge/FACTS.md`, F-0001.",
+  "canPublish": "yes",
+  "sourcePath": "docs/Info_ForGeneration/PRODUCT_FACTS.md",
+  "addedAt": "2026-11-26T19:55:39.709Z"
+}

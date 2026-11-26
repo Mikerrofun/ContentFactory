@@ -1,9 +1,4 @@
-export interface RuleResult {
-  text: string;
-  count: number;
-}
-
-export type CleanStats = Record<string, number>;
+import type { CleanStats, RuleResult } from "./types";
 
 export function subAll(text: string, pattern: RegExp, replacement: string): RuleResult {
   let count = 0;

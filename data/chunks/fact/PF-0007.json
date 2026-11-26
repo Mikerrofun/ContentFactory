@@ -1,0 +1,8 @@
+{
+  "id": "PF-0007",
+  "type": "fact",
+  "text": "безопасный микро-шаг в посте — конкретное действие на 10-30 минут с телефона. Источник: `knowledge/GUARDRAILS.md`, раздел 1.",
+  "canPublish": "yes",
+  "sourcePath": "docs/Info_ForGeneration/PRODUCT_FACTS.md",
+  "addedAt": "2026-11-26T19:55:39.709Z"
+}

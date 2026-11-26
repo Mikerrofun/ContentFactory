@@ -1,0 +1,8 @@
+{
+  "id": "PF-0025",
+  "type": "fact",
+  "text": "нельзя придумывать цифры, кейсы, регалии, достижения, названия сервисов и условия продукта. Источник: `knowledge/GUARDRAILS.md`, раздел 1.",
+  "canPublish": "yes",
+  "sourcePath": "docs/Info_ForGeneration/PRODUCT_FACTS.md",
+  "addedAt": "2026-11-26T19:55:39.709Z"
+}

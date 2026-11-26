@@ -1,6 +1,6 @@
 import { prisma } from "../../../db/prisma";
 import { readChunkTree } from "../lib/fs";
-import { withRetry } from "../lib/with-retry";
+import { withRetry } from "../../../shared/lib/net/with-retry";
 import type { FactChunk } from "../lib/types";
 
 const APPLY = process.argv.includes("--apply");
