@@ -2,6 +2,7 @@ import { runFactChunker } from "./fact/chunk";
 import { runCaseChunker } from "./case/chunk";
 import { runBestChunker } from "./best/chunk";
 import { runAudienceChunker } from "./audience/chunk";
+import { runSwipeChunker } from "./swipe/chunk";
 
 function main() {
   const type = process.argv[2] ?? "fact";
@@ -30,8 +31,14 @@ function main() {
       for (const [src, n] of Object.entries(report.bySource)) console.log(`  ${src}: ${n}`);
       break;
     }
+    case "swipe": {
+      const { report } = runSwipeChunker();
+      console.log(`[chunk] swipe: ${report.total} чанков`);
+      for (const [src, n] of Object.entries(report.bySource)) console.log(`  ${src}: ${n}`);
+      break;
+    }
     default:
-      console.error(`[chunk] тип "${type}" не реализован (доступен: fact, case, best, audience)`);
+      console.error(`[chunk] тип "${type}" не реализован (доступен: fact, case, best, audience, swipe)`);
       process.exit(1);
   }
 }
