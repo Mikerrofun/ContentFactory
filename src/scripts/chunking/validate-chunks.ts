@@ -2,23 +2,34 @@
 // Читает data/chunks/<type> и проверяет каждый чанк. Exit 1 при ошибках.
 // Отдельно от чанкера: проверяет результат, а не сам себя.
 import { readChunkTree } from "./lib/fs";
-import { validateSet, summarize, type Violation } from "./fact/validate";
-import type { FactChunk } from "./lib/types";
+import { validateSet as validateFact, summarize, type Violation } from "./fact/validate";
+import { validateSet as validateCase } from "./case/validate";
+import { validateSet as validateBest } from "./best/validate";
+import type { FactChunk, CaseChunk, BestChunk } from "./lib/types";
 
-const EXPECTED: Record<string, { fact?: number; pf?: number }> = {
-  fact: { fact: 71 },
+type Runner = (chunks: unknown[]) => Violation[];
+
+const RUNNERS: Record<string, Runner> = {
+  fact: (chunks) => validateFact(chunks as FactChunk[], { fact: 71 }),
+  case: (chunks) => validateCase(chunks as CaseChunk[], 68),
+  best: (chunks) => validateBest(chunks as BestChunk[], 64),
 };
 
 function main() {
   const type = process.argv[2] ?? "fact";
-  const chunks = readChunkTree<FactChunk>(type);
+  const run = RUNNERS[type];
+  if (!run) {
+    console.error(`[validate] тип "${type}" не поддерживается (доступен: fact, case, best)`);
+    process.exit(1);
+  }
 
+  const chunks = readChunkTree<unknown>(type);
   if (chunks.length === 0) {
     console.error(`[validate] нет чанков в data/chunks/${type} — сначала запусти чанкер`);
     process.exit(1);
   }
 
-  const violations: Violation[] = validateSet(chunks, EXPECTED[type]);
+  const violations: Violation[] = run(chunks);
   const { errors, warnings } = summarize(violations);
 
   for (const v of violations) {
