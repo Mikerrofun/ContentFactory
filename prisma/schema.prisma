@@ -18,7 +18,7 @@ enum ChunkType {
   knowledge
   case
   fact
-  voice
+  best
   swipe
   audience
 }

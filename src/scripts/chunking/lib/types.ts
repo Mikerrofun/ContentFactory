@@ -1,6 +1,6 @@
 // Общие типы чанкера. БД/ФС не знают — чистые структуры.
 
-export type ChunkType = "knowledge" | "case" | "fact" | "voice" | "swipe" | "audience";
+export type ChunkType = "knowledge" | "case" | "fact" | "best" | "swipe" | "audience";
 
 export type CanPublish = "yes" | "partial" | "no";
 
@@ -25,6 +25,21 @@ export interface CaseChunk {
   fearClosed: string[] | null;
   depletion: number;
   cooldownUntil: string | null;
+  embedding: null;
+  addedAt: string;
+}
+
+// Единый чанк `best` (см. docs/Features(steps)/Chunking/best/bestPlan.md).
+export interface BestChunk {
+  id: string;
+  type: "best";
+  text: string;
+  pillar: string | null;
+  format: string | null;
+  sourcePath: string;
+  sScheme: null;
+  closingType: null;
+  markers: null;
   embedding: null;
   addedAt: string;
 }

@@ -4,20 +4,22 @@
 import { readChunkTree } from "./lib/fs";
 import { validateSet as validateFact, summarize, type Violation } from "./fact/validate";
 import { validateSet as validateCase } from "./case/validate";
-import type { FactChunk, CaseChunk } from "./lib/types";
+import { validateSet as validateBest } from "./best/validate";
+import type { FactChunk, CaseChunk, BestChunk } from "./lib/types";
 
 type Runner = (chunks: unknown[]) => Violation[];
 
 const RUNNERS: Record<string, Runner> = {
   fact: (chunks) => validateFact(chunks as FactChunk[], { fact: 71 }),
   case: (chunks) => validateCase(chunks as CaseChunk[], 68),
+  best: (chunks) => validateBest(chunks as BestChunk[], 64),
 };
 
 function main() {
   const type = process.argv[2] ?? "fact";
   const run = RUNNERS[type];
   if (!run) {
-    console.error(`[validate] тип "${type}" не поддерживается (доступен: fact, case)`);
+    console.error(`[validate] тип "${type}" не поддерживается (доступен: fact, case, best)`);
     process.exit(1);
   }
 
