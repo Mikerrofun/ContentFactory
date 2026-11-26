@@ -72,6 +72,23 @@ export interface AudienceChunk {
   addedAt: string;
 }
 
+// Единый чанк `swipe` (см. docs/Features(steps)/Chunking/swipe/swipePlan.md).
+// 1 карточка-морф-шаблон = 1 чанк (текст+разбор вместе). embedding — позже.
+export interface SwipeChunk {
+  id: string;
+  type: "swipe";
+  text: string;
+  pillar: string | null;
+  format: string | null;
+  sourcePath: string;
+  whyItWorks: string[] | null;
+  structure: string[] | null;
+  patternsToBorrow: string[] | null;
+  doNotCopy: string[] | null;
+  embedding: null;
+  addedAt: string;
+}
+
 export interface Report {
   type: ChunkType;
   total: number;

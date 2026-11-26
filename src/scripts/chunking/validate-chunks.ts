@@ -6,7 +6,8 @@ import { validateSet as validateFact, summarize, type Violation } from "./fact/v
 import { validateSet as validateCase } from "./case/validate";
 import { validateSet as validateBest } from "./best/validate";
 import { validateSet as validateAudience } from "./audience/validate";
-import type { FactChunk, CaseChunk, BestChunk, AudienceChunk } from "./lib/types";
+import { validateSet as validateSwipe } from "./swipe/validate";
+import type { FactChunk, CaseChunk, BestChunk, AudienceChunk, SwipeChunk } from "./lib/types";
 
 type Runner = (chunks: unknown[]) => Violation[];
 
@@ -15,13 +16,14 @@ const RUNNERS: Record<string, Runner> = {
   case: (chunks) => validateCase(chunks as CaseChunk[], 68),
   best: (chunks) => validateBest(chunks as BestChunk[], 64),
   audience: (chunks) => validateAudience(chunks as AudienceChunk[]),
+  swipe: (chunks) => validateSwipe(chunks as SwipeChunk[], 56),
 };
 
 function main() {
   const type = process.argv[2] ?? "fact";
   const run = RUNNERS[type];
   if (!run) {
-    console.error(`[validate] тип "${type}" не поддерживается (доступен: fact, case, best, audience)`);
+    console.error(`[validate] тип "${type}" не поддерживается (доступен: fact, case, best, audience, swipe)`);
     process.exit(1);
   }
 
