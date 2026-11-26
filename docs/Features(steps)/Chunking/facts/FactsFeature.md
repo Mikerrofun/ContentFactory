@@ -23,6 +23,26 @@
 
 Подпапка на каждый файл: `clean/`, `fs/` (+ общий `types.ts`). Внутри подпапки — реализация + `types.ts` с типами + `index.ts` баррель (импорты снаружи не меняются). `validate` — не общий, лежит в `fact/validate.ts` (критерии зависят от типа).
 
+Реальная структура:
+
+```
+src/scripts/chunking/
+├── chunk.ts                 # диспетчер чанкеров по типу
+├── load.ts                  # диспетчер загрузчиков по типу (dynamic import)
+├── validate-chunks.ts       # гейт валидации (exit 1)
+├── lib/
+│   ├── types.ts             # общие типы: ChunkType, CanPublish, FactChunk, Report, ChunkRunResult
+│   ├── clean/               # clean.ts + types.ts + index.ts
+│   └── fs/                  # fs.ts (generic) + index.ts
+└── fact/
+    ├── chunk.ts             # парс FACTS + PRODUCT_FACTS → JSON
+    ├── load.ts              # upsert в Chunk через withRetry
+    └── validate.ts          # критерии fact (V1–V9) + типы
+src/shared/lib/net/
+├── with-retry.ts            # общий withRetry (вся система)
+└── index.ts
+```
+
 #### Очистка — `lib/clean/`
 
 ```ts
@@ -63,7 +83,7 @@ export function summarize(violations): { errors; warnings }
 | V8 | доля кириллицы < 50% | warn |
 | V9 | пустой `sourcePath` | error |
 
-Структурные проверки: уникальность `id`, счётчики (`fact=71`, `PF=27`).
+Структурные проверки: уникальность `id`, счётчики (в гейте форсится `fact=71`; `PF=27` считается, но не форсится).
 Гейт `validate-chunks.ts` **отдельно** от чанкера: `exit 1` при errors → в БД не грузим. Проверяется результат, а не сам чанкер.
 
 #### Файловая система — `lib/fs/` (универсальная, generic)
