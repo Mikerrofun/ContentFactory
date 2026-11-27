@@ -84,6 +84,11 @@ model Chunk {
   phrase        String?
   emotion       String?
 
+  // LLM-заполнение (кто/когда/чем заполнял поля) — для воспроизводимости эпизодов.
+  llmProcessedAt   DateTime?
+  llmModel         String?
+  llmPromptVersion String?
+
   @@index([type])
   @@index([pillar])
 }

@@ -16,6 +16,14 @@ export interface FactChunk {
   sourcePath: string;
 }
 
+// Маркеры `best` (4 словаря, заполняет LLM).
+export interface BestMarkers {
+  fear: string[];
+  bio: string[];
+  emotional: string[];
+  anti: string[];
+}
+
 // Единый чанк `case` (см. docs/Features(steps)/Chunking/case/casePlan.md).
 export interface CaseChunk {
   id: string;
@@ -24,7 +32,7 @@ export interface CaseChunk {
   topic: string | null;
   pillar: string | null;
   sourcePath: string;
-  fearClosed: string[] | null;
+  fearClosed: number[] | null;
   depletion: number;
   cooldownUntil: string | null;
   embedding: null;
@@ -38,9 +46,9 @@ export interface BestChunk {
   pillar: string | null;
   format: string | null;
   sourcePath: string;
-  sScheme: null;
-  closingType: null;
-  markers: null;
+  sScheme: string | null;
+  closingType: string | null;
+  markers: BestMarkers | null;
   embedding: null;
 }
 

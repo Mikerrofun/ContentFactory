@@ -11,11 +11,7 @@ import {
   PLACEHOLDER_RE,
   PILLAR_VALUES,
 } from "./config";
-
-interface RawPost {
-  sourceId: string;
-  block: string;
-}
+import type { RawPost } from "./types";
 
 // Markdown hard-break: одиночный `\` в конце строки → перенос.
 function stripHardBreaks(text: string): string {

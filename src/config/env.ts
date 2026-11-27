@@ -12,7 +12,10 @@ const schema = z.object({
   EMBEDDING_DIM: z.coerce.number().default(4096),
   EMBEDDING_INPUT_TYPE: z.string().default("search_document"),
   OPENROUTER_BASE_URL: z.string().url().default("https://openrouter.ai/api/v1"),
-  LLM_MODEL: z.string().default("openai/gpt-4o-mini"),
+  LLM_MODEL: z.string().default("baidu/ernie-5.5-flash-preview:free"),
+  LLM_FALLBACK_MODEL: z.string().default("z-ai/glm-5.3-flash"),
+  LLM_TEMPERATURE: z.coerce.number().default(0),
+  LLM_CONCURRENCY: z.coerce.number().int().positive().default(3),
 });
 
 const parsed = schema.safeParse(process.env);

@@ -7,6 +7,7 @@ import {
   SOURCE_AUDIENCE,
   emotionForSection,
 } from "./config";
+import type { RawPhrase } from "./types";
 
 const H1_RE = /^#\s/;
 const H2_RE = /^##\s/;
@@ -22,9 +23,9 @@ function deescapeExtra(text: string): string {
   return text.replace(/\\\*/g, "*").replace(/\\>/g, ">").replace(/\\`/g, "`");
 }
 
-export function parsePhrases(raw: string): Array<{ text: string; emotion: AudienceEmotion }> {
+export function parsePhrases(raw: string): RawPhrase[] {
   const { text } = clean(raw);
-  const out: Array<{ text: string; emotion: AudienceEmotion }> = [];
+  const out: RawPhrase[] = [];
   let emotion: AudienceEmotion = "прочее";
   let cur: string | null = null;
   let open = false;
@@ -82,7 +83,7 @@ export function parsePhrases(raw: string): Array<{ text: string; emotion: Audien
 }
 
 function toChunk(
-  phrase: { text: string; emotion: AudienceEmotion },
+  phrase: RawPhrase,
   id: string,
 ): AudienceChunk {
   return {
