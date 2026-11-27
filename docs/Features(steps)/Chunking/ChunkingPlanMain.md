@@ -52,8 +52,7 @@
 |---|---|---|
 | `id` | `ID` (F-0001) | PK |
 | `type` | — | `fact` |
-| `text` | «Что произошло» + «Мой вывод» | очищенный, для чтения |
-| `factText` | «Что произошло» + «Мой вывод» | **только это идёт в вектор** |
+| `text` | «Что произошло» + «Мой вывод» | очищенный, для чтения 
 | `period` | `Период` | строка |
 | `allowedContext` | `Контекст` | статично |
 | `canPublish` | `Можно публично` | да→`true`, с оговорками→`partial` (enum: yes/no/partial) |
@@ -65,8 +64,6 @@
 | `sourcePath` | путь к FACTS.md | |
 | `sourceUrl` | — | нет |
 
-### vectorText
-`factText` = «Что произошло» + «Мой вывод». Ничего больше.
 
 ### Открытые вопросы блока
 - `Сцена / Эмоция / Теги` — отдельные поля или сложить в `text`? (предлагаю отдельные статичные поля).
@@ -85,23 +82,19 @@
 | Поле prisma | Источник | Примечание |
 |---|---|---|
 | `id` | `POST VK-P-####` | PK |
-| `type` | — | `voice` |
-| `text` | тело поста | очищенный |
+| `type` | — | `best` |
+| `text` | тело поста + метаданные (Платформа/Дата/Цель/Контекст/Метрика) | очищенный; метаданные ВНУТРИ text, отдельных полей нет |
 | `pillar` | `Pillar/PILLAR` (есть у ~4) | иначе `null` |
 | `sScheme` | — | `null` сейчас, заполнит LLM при индексации |
 | `closingType` | — | `null` сейчас (LLM позже) |
 | `markers` | — | `null` сейчас (LLM позже) |
-| `isHumanFinal` | — | `false` при создании |
-| `platform` | `Платформа` | **новое поле** (или в sourcePath) |
-| `postDate` | `Дата` | **новое поле** |
-| `goal` | `Цель` | **новое поле** |
-| `context` | `Контекст` | **новое поле** |
-| `successMetric` | `Метрика успеха` | **новое поле** |
+| `isHumanFinal` | — | `false` при создании (true для финалов копирайтера) |
 | `format` | `Формат` (есть у ~11) | иначе `null` |
 | `sourcePath` | путь к BEST.md | |
 
 ### vectorText
-Тело поста (как есть). sScheme/closingType/markers — не в этой итерации.
+Тело поста (как есть, вместе с метаданными внутри). sScheme/closingType/markers — не в этой итерации.
+Поля `platform/postDate/goal/context/successMetric` НЕ добавляем — они уже внутри `text`.
 
 ### Открытые вопросы блока
 - `sScheme / closingType / markers` — точно `null` сейчас (LLM-проход позже)? (да, по решению).
@@ -158,11 +151,11 @@
 
 ## Схема БД — что добавить в prisma
 - `Chunk.depletion` → `@default(1.0)` (семантика 1=полный → 0=исчерпан).
-- Новые поля: `canPublish`, `scene`, `emotion`, `tags[]`, `platform`, `postDate`, `goal`, `context`, `successMetric`.
+- Новые поля: `canPublish` (fact). Метаданные поста (Платформа/Дата/Цель/Контекст/Метрика) — НЕ отдельные поля, они внутри `text`.
 - `chunkEmbedding` (pgvector) — добавим в итерации векторов.
+- Таймстемпы: только `createdAt` (addedAt и updatedAt удалены как дубли/ненужные).
 
 ## Открытые вопросы (общие)
-1. `Сцена/Эмоция/Теги` (fact) и метаданные поста (voice) — отдельные поля или в `text`?
-2. `Можно публично` → enum `yes/no/partial` ок?
-3. `depletion @default(1.0)` + cooldown — подтверждаешь смену семантики?
-4. Куда писать чанкер: `src/scripts/chunking/` (в проекте уже `src/scripts`) или `scripts/chunking/`?
+1. `Можно публично` → enum `yes/no/partial` ок?
+2. `depletion @default(1.0)` + cooldown — подтверждаешь смену семантики?
+3. Куда писать чанкер: `src/scripts/chunking/` (в проекте уже `src/scripts`) или `scripts/chunking/`?

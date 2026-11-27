@@ -17,7 +17,9 @@
     "cron:index": "tsx src/cron/index.ts",
     "chunk": "tsx src/scripts/chunking/chunk.ts",
     "chunk:validate": "tsx src/scripts/chunking/validate-chunks.ts",
-    "chunk:load": "tsx src/scripts/chunking/load.ts"
+    "chunk:load": "tsx src/scripts/chunking/load.ts",
+    "embed": "tsx src/scripts/chunking/embed.ts",
+    "embed:validate": "tsx src/scripts/chunking/validate-embed.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.123",

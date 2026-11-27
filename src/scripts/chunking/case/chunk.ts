@@ -73,7 +73,7 @@ function buildText(fields: Partial<Record<CaseField, string>>): string {
   return parts.join("\n");
 }
 
-function toChunk(card: RawCard, addedAt: string): CaseChunk {
+function toChunk(card: RawCard): CaseChunk {
   const topic = (card.fields.topic ?? "").trim() || null;
   const pillar = (card.fields.pillar ?? "").trim() || null;
   return {
@@ -87,13 +87,11 @@ function toChunk(card: RawCard, addedAt: string): CaseChunk {
     depletion: 1.0,
     cooldownUntil: null,
     embedding: null,
-    addedAt,
   };
 }
 
 export function runCaseChunker(): { chunks: CaseChunk[]; report: Report } {
-  const addedAt = new Date().toISOString();
-  const chunks = parseCases(readFileSync(CASE_PATH, "utf8")).map((c) => toChunk(c, addedAt));
+  const chunks = parseCases(readFileSync(CASE_PATH, "utf8")).map((c) => toChunk(c));
 
   const bySource: Record<string, number> = {};
   for (const c of chunks) bySource[c.sourcePath] = (bySource[c.sourcePath] ?? 0) + 1;

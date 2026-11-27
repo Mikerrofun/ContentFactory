@@ -3,6 +3,5 @@
   "type": "fact",
   "text": "ориентиры трафика сеток: по юр-направлению ~300 тыс/день; по мед-направлению сопоставимо. Источник: `knowledge/FACTS.md`, F-0038.",
   "canPublish": "yes",
-  "sourcePath": "docs/Info_ForGeneration/PRODUCT_FACTS.md",
-  "addedAt": "2026-11-26T20:49:09.314Z"
+  "sourcePath": "docs/Info_ForGeneration/PRODUCT_FACTS.md"
 }

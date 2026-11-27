@@ -84,7 +84,6 @@ export function parsePhrases(raw: string): Array<{ text: string; emotion: Audien
 function toChunk(
   phrase: { text: string; emotion: AudienceEmotion },
   id: string,
-  addedAt: string,
 ): AudienceChunk {
   return {
     id,
@@ -94,14 +93,12 @@ function toChunk(
     fearType: null,
     sourcePath: SOURCE_AUDIENCE,
     embedding: null,
-    addedAt,
   };
 }
 
 export function runAudienceChunker(): { chunks: AudienceChunk[]; report: Report } {
-  const addedAt = new Date().toISOString();
   const phrases = parsePhrases(readFileSync(AUDIENCE_PATH, "utf8"));
-  const chunks = phrases.map((p, i) => toChunk(p, `AUD-${String(i + 1).padStart(4, "0")}`, addedAt));
+  const chunks = phrases.map((p, i) => toChunk(p, `AUD-${String(i + 1).padStart(4, "0")}`));
 
   const bySource: Record<string, number> = {};
   for (const c of chunks) bySource[c.sourcePath] = (bySource[c.sourcePath] ?? 0) + 1;
