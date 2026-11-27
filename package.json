@@ -19,7 +19,10 @@
     "chunk:validate": "tsx src/scripts/chunking/validate-chunks.ts",
     "chunk:load": "tsx src/scripts/chunking/load.ts",
     "embed": "tsx src/scripts/chunking/embed.ts",
-    "embed:validate": "tsx src/scripts/chunking/validate-embed.ts"
+    "embed:validate": "tsx src/scripts/chunking/validate-embed.ts",
+    "llm:validate": "tsx src/scripts/chunking/llm-validate.ts",
+    "llm:selftest": "tsx src/scripts/chunking/llm-selftest.ts",
+    "markers:regex": "tsx src/scripts/chunking/markers-regex.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.123",

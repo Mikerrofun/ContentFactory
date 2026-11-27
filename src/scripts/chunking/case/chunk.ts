@@ -3,11 +3,7 @@ import { clean } from "../lib/clean";
 import { writeChunkTree, writeReport } from "../lib/fs";
 import type { CaseChunk, Report } from "../lib/types";
 import { CASE_FIELDS, CASE_PATH, SOURCE_CASE, TEXT_ORDER, type CaseField } from "./config";
-
-interface RawCard {
-  id: string;
-  fields: Partial<Record<CaseField, string>>;
-}
+import type { RawCard } from "./types";
 
 const FIELD_SET = new Set<string>(CASE_FIELDS);
 // Однозначные поля: значение только на строке-маркере. Если в источнике
