@@ -44,7 +44,7 @@
 
 **knowledge** (главный донор фактуры)
 - `facts[]` (3-7 атомарных), `fact_embeddings[]`, `facts_used[]`
-- `topic`, `cleaned` (почищен ли от разгов.мусора)
+- `topic`
 
 **case** (история-доказательство)
 - `fear_closed[]` — см. §5

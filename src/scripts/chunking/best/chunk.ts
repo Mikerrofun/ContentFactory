@@ -140,7 +140,7 @@ function extractFormat(block: string): string | null {
   return null;
 }
 
-function toChunk(post: RawPost, id: string, addedAt: string): BestChunk {
+function toChunk(post: RawPost, id: string): BestChunk {
   return {
     id,
     type: "best",
@@ -152,14 +152,12 @@ function toChunk(post: RawPost, id: string, addedAt: string): BestChunk {
     closingType: null,
     markers: null,
     embedding: null,
-    addedAt,
   };
 }
 
 export function runBestChunker(): { chunks: BestChunk[]; report: Report } {
-  const addedAt = new Date().toISOString();
   const posts = parsePosts(readFileSync(BEST_PATH, "utf8"));
-  const chunks = posts.map((p, i) => toChunk(p, `BEST-${String(i + 1).padStart(4, "0")}`, addedAt));
+  const chunks = posts.map((p, i) => toChunk(p, `BEST-${String(i + 1).padStart(4, "0")}`));
 
   const bySource: Record<string, number> = {};
   for (const c of chunks) bySource[c.sourcePath] = (bySource[c.sourcePath] ?? 0) + 1;

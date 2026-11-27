@@ -74,18 +74,17 @@ function buildText(fields: Record<string, string>): string {
   return parts.join("\n");
 }
 
-function cardsToChunks(cards: RawCard[], addedAt: string): FactChunk[] {
+function cardsToChunks(cards: RawCard[]): FactChunk[] {
   return cards.map((card) => ({
     id: (card.fields.ID ?? "").trim(),
     type: "fact",
     text: buildText(card.fields),
     canPublish: mapCanPublish(card.fields["Можно публично"]),
     sourcePath: SOURCE_FACTS,
-    addedAt,
   }));
 }
 
-export function parseProductFacts(raw: string, addedAt: string): FactChunk[] {
+export function parseProductFacts(raw: string): FactChunk[] {
   const { text } = clean(raw);
   const chunks: FactChunk[] = [];
   let n = 0;
@@ -93,15 +92,14 @@ export function parseProductFacts(raw: string, addedAt: string): FactChunk[] {
     const line = rawLine.trim();
     if (!line.startsWith("- Факт:")) continue;
     n += 1;
-    chunks.push({ id: `PF-${String(n).padStart(4, "0")}`, type: "fact", text: line.replace(/^-\s*Факт:\s*/, ""), canPublish: "yes", sourcePath: SOURCE_PF, addedAt });
+    chunks.push({ id: `PF-${String(n).padStart(4, "0")}`, type: "fact", text: line.replace(/^-\s*Факт:\s*/, ""), canPublish: "yes", sourcePath: SOURCE_PF });
   }
   return chunks;
 }
 
 export function runFactChunker(): { chunks: FactChunk[]; report: Report } {
-  const addedAt = new Date().toISOString();
-  const facts = cardsToChunks(parseFacts(readFileSync(FACTS_PATH, "utf8")), addedAt);
-  const pf = parseProductFacts(readFileSync(PRODUCT_FACTS_PATH, "utf8"), addedAt);
+  const facts = cardsToChunks(parseFacts(readFileSync(FACTS_PATH, "utf8")));
+  const pf = parseProductFacts(readFileSync(PRODUCT_FACTS_PATH, "utf8"));
   const chunks = [...facts, ...pf];
 
   const bySource: Record<string, number> = {};

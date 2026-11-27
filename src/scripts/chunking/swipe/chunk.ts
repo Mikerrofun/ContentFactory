@@ -122,7 +122,7 @@ function toArray(value: string | undefined, mode: "bullet" | "line"): string[] |
   return bullets.length ? bullets : null;
 }
 
-function toChunk(card: RawCard, id: string, addedAt: string): SwipeChunk {
+function toChunk(card: RawCard, id: string): SwipeChunk {
   const pillar = (card.fields.PILLAR ?? "").trim() || null;
   const format = (card.fields.FORMAT ?? "").trim() || null;
   return {
@@ -137,14 +137,12 @@ function toChunk(card: RawCard, id: string, addedAt: string): SwipeChunk {
     patternsToBorrow: toArray(card.fields.PATTERNS_TO_BORROW, "bullet"),
     doNotCopy: toArray(card.fields.DO_NOT_COPY, "bullet"),
     embedding: null,
-    addedAt,
   };
 }
 
 export function runSwipeChunker(): { chunks: SwipeChunk[]; report: Report } {
-  const addedAt = new Date().toISOString();
   const cards = parseCards(readFileSync(SWIPES_PATH, "utf8"));
-  const chunks = cards.map((c, i) => toChunk(c, `SW-${String(i + 1).padStart(4, "0")}`, addedAt));
+  const chunks = cards.map((c, i) => toChunk(c, `SW-${String(i + 1).padStart(4, "0")}`));
 
   const bySource: Record<string, number> = {};
   for (const c of chunks) bySource[c.sourcePath] = (bySource[c.sourcePath] ?? 0) + 1;

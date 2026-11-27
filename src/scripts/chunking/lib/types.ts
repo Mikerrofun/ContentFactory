@@ -2,6 +2,9 @@
 
 export type ChunkType = "knowledge" | "case" | "fact" | "best" | "swipe" | "audience";
 
+// Типы, готовые к эмбеддингу/нарезке (без knowledge — ещё не нарезан).
+export const CHUNK_TYPES = ["fact", "case", "best", "audience", "swipe"] as const satisfies readonly ChunkType[];
+
 export type CanPublish = "yes" | "partial" | "no";
 
 // Единый чанк `fact` (см. docs/Features(steps)/Chunking/facts/facts.md).
@@ -11,7 +14,6 @@ export interface FactChunk {
   text: string;
   canPublish: CanPublish;
   sourcePath: string;
-  addedAt: string;
 }
 
 // Единый чанк `case` (см. docs/Features(steps)/Chunking/case/casePlan.md).
@@ -26,7 +28,6 @@ export interface CaseChunk {
   depletion: number;
   cooldownUntil: string | null;
   embedding: null;
-  addedAt: string;
 }
 
 // Единый чанк `best` (см. docs/Features(steps)/Chunking/best/bestPlan.md).
@@ -41,7 +42,6 @@ export interface BestChunk {
   closingType: null;
   markers: null;
   embedding: null;
-  addedAt: string;
 }
 
 // Эмоция-категория чанка `audience` (детерминированно из секции AUDIENCE.md).
@@ -69,7 +69,6 @@ export interface AudienceChunk {
   fearType: number | null;
   sourcePath: string;
   embedding: null;
-  addedAt: string;
 }
 
 // Единый чанк `swipe` (см. docs/Features(steps)/Chunking/swipe/swipePlan.md).
@@ -86,7 +85,6 @@ export interface SwipeChunk {
   patternsToBorrow: string[] | null;
   doNotCopy: string[] | null;
   embedding: null;
-  addedAt: string;
 }
 
 export interface Report {
