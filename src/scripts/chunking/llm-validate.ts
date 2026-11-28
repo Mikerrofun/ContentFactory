@@ -1,5 +1,5 @@
 // Диспетчер LLM-заполнения: tsx src/scripts/chunking/llm-validate.ts <type> [--apply] [--force] [--probe N] [--limit N]
-// type: case|best|audience|all. Без --apply — dry-run (БД не трогаем).
+// type: case|best|audience|knowledge|all. Без --apply — dry-run (БД не трогаем).
 // --force — перезаписать и непустые поля; --probe N — N чанков с вызовом модели без записи;
 // --limit N — не больше N чанков за прогон (удобно для :free-лимитов).
 import "dotenv/config";
@@ -8,8 +8,9 @@ import { LLM_CONCURRENCY, LLM_FALLBACK_MODEL, LLM_MODEL } from "./lib/llm";
 import { runCaseLLM } from "./case/llm-validating/run";
 import { runBestLLM } from "./best/llm-validating/run";
 import { runAudienceLLM } from "./audience/llm-validating/run";
+import { runKnowledgeLLM } from "./knowledge/llm-validating/run";
 
-const TYPES = ["case", "best", "audience"] as const;
+const TYPES = ["case", "best", "audience", "knowledge"] as const;
 type LlmType = (typeof TYPES)[number];
 
 const APPLY = process.argv.includes("--apply");
@@ -54,7 +55,13 @@ async function main() {
   for (const t of targets) {
     const opts = { apply: APPLY, force: FORCE, probe: PROBE || undefined, limit: LIMIT || undefined };
     const r =
-      t === "case" ? await runCaseLLM(opts) : t === "best" ? await runBestLLM(opts) : await runAudienceLLM(opts);
+      t === "case"
+        ? await runCaseLLM(opts)
+        : t === "best"
+          ? await runBestLLM(opts)
+          : t === "audience"
+            ? await runAudienceLLM(opts)
+            : await runKnowledgeLLM(opts);
     console.log(`[llm-validate] ${t}: всего=${r.total} заполнено=${r.filled} failed=${r.failed}`);
     failed += r.failed;
   }

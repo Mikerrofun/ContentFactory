@@ -35,6 +35,7 @@
 - `docs/System/Chunks/chunks.md`, `chunkPresentation.md` — типы чанков, 5 слотов, износ.
 - `docs/System/Retrieval/bundle.md` — этот документ.
 - `docs/Facts:Case:Best/PILLARS.md` — pillar → формат (A-M).
+- `docs/Features(steps)/Chunking/knowledge/knowledgePlan.md`, `docs/Facts:Case:Best/KNOWLEDGE.md` — тип `knowledge` (text/topic/facts/factEmbeddings, depletion 0=свежий).
 - `docs/Info_ForGeneration/Markers/fear_markers.md` — 7 групп страхов (fearType/fearClosed).
 - `data/chunks/<type>/*.json` — реальные примеры (особенно `fact`, `audience`, `swipe`).
 
@@ -44,17 +45,17 @@
 
 | Тип | Кол-во | Эмбеддинги | LLM-поля | depletion |
 |---|---|---|---|---|
-| case | 68 | 68/68 | `fearClosed` 68/68 | 1.0 (статичен, списания пока нет) |
-| fact | 98 | 98/98 | — | 0 (семантика сломана, см. §14) |
+| knowledge | ~10 (3 сейчас) | да | `facts` 3-7, `topic` | 0 = свежий |
+| case | 68 | 68/68 | `fearClosed` 68/68 | 1.0 → бэкфилл в 0 |
+| fact | 98 | 98/98 | — | 0 |
 | best | 64 | 64/64 | `sScheme` 60, `closingType` 64, `markers` 64 | 0 |
 | swipe | 56 | 56/56 | — | 0 |
 | audience | 338 | 338/338 | `fearType` 30 (только страхи) | 0 |
-| knowledge | 0 | — | — | — |
 
 Следствия:
-- Ядро сейчас = только `case` (68). `knowledge` появится позже (автор добавит ~10 для проверок).
-- Все 624 вектора (4096d, qwen3-embedding-8b) на месте — векторный поиск работает.
-- `depletion` реально живой только у `case`; списание появится в Этапе 5.
+- Ядро = `knowledge` + `case`. Якорь может быть любого из них.
+- Все векторы (4096d, qwen3-embedding-8b) на месте — векторный поиск работает.
+- **Единая семантика `depletion`: 0 = свежий (полный ресурс), 1 = исчерпан** (совпадает с `knowledgePlan`, формулой `(1−depletion)^α` и schema `default 0`). `facts`/`factsUsed` — только в учёте (Этап 5), в retrieval не участвуют.
 - У `audience` `fearType` заполнен лишь у 30/338 → audience берём мало и без emotion-сходства.
 
 ---
@@ -134,7 +135,7 @@ type Composition = Record<ChunkType | 'anchor', number>;
 
 Читаем из `Chunk`: `type`, `topic`, `pillar`, `sScheme`, `closingType`, `format`, `fearClosed[]`, `markers`, `emotion`, `depletion`. Это «запрос» для обоих трактов (заменяет строку-вход и шаг classification из старого retrieval).
 
-Якорь выбирается **случайно из `case`** (MVP). Позже — **взвешенно-случайно по `(1−depletion)^α`**: чем ниже depletion, тем меньше шанс стать якорем. Сейчас у всех `depletion=1` → равномерно случайно.
+Якорь выбирается **случайно из ядра** (`knowledge` + `case`, MVP). Позже — **взвешенно-случайно по `(1−depletion)^α`**: свежий (depletion→0) → выше шанс стать якорем; исчерпанный (depletion→1) → ниже. Сейчас у всех `depletion=0` → равномерно случайно.
 
 ---
 
@@ -173,14 +174,18 @@ score = base · (1
 
 `matchTopic` считаем, только если у якоря и кандидата заполнен `topic` (case/knowledge); иначе 0. «Многомерность» = embedding + тип + pillar + схема + страх + topic + свежесть. Чистый косинус — не единственный сигнал.
 
+**Knowledge-кандидаты:** у них `pillar/scheme/fear = null`, поэтому `matchPillar/matchScheme/matchFear = 0` — работают только `matchTopic` + embedding + свежесть. Это нормально: knowledge матчится по теме, не по пиллару.
+
+**Состав ядра (soft):** якорь + 8 соседей; из них **knowledge 3-5** (близкие по embedding, после rerank+MMR), остальное — case. Лимит knowledge мягкий, бюджет-driven; сейчас knowledge всего 3 → берём сколько есть (≤3). `factEmbeddings` в retrieval v1 **не используем** (только учёт, Этап 5) — матч по chunk-embedding + `topic`.
+
 ---
 
 ## 6. Шаг 3. Фильтр depletion
 
 Вход: 50. Выход: выжившие.
 
-- `depletion < τ` → отсев. **τ = 0.3** (ниже нет смысла брать).
-- ⚠️ Блокер: семантика `depletion` сломана (default 0). Чиним до запуска (§14).
+- `depletion > τ` → отсев (исчерпанные). **τ = 0.7** (выше — ресурса почти нет).
+- Единая семантика: 0 = свежий, 1 = исчерпан. Все типы инициируются в 0 (миграция `UPDATE "Chunk" SET "depletion"=0` + `case/load.ts` create=0).
 
 ---
 
@@ -300,7 +305,6 @@ Retrieval «учится» только через:
 - Джокеры (1-2 не по теме).
 - Rerank как жёсткий гейт (только degrade/toggle).
 - Swipe cooldown.
-- knowledge (появится позже).
 
 ---
 
@@ -308,7 +312,7 @@ Retrieval «учится» только через:
 
 1. Точные `w_*`, `α`, `K`, `0.55`, `τ`, `λ` — стартовые, подбор на ручной разметке 50-100 постов.
 2. Транспорт rerank: OpenRouter vs Cohere-ключ для `cohere/rerank-5-fast`.
-3. Depletion-бэкфилл (`default 1.0`) — блокер.
+3. **Depletion — единая инициализация (сделать до запуска):** миграция `UPDATE "Chunk" SET "depletion" = 0;` (всем типам, один тип semantics 0=свежий) + правка `case/load.ts` — при `create` ставить `depletion: 0` (сейчас 1.0). Schema `default 0` уже верный.
 4. Формат хранения весов скоринга (конфиг vs `Weight`).
 5. Порог «полных правок» и длина cooldown — Этап 5.
 

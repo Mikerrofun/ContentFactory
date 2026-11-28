@@ -6,11 +6,12 @@ const loaders: Record<string, () => Promise<unknown>> = {
   best: () => import("./best/load"),
   audience: () => import("./audience/load"),
   swipe: () => import("./swipe/load"),
+  knowledge: () => import("./knowledge/load"),
 };
 
 const run = loaders[type];
 if (!run) {
-  console.error(`[load] тип "${type}" не реализован (доступен: fact, case, best, audience, swipe)`);
+  console.error(`[load] тип "${type}" не реализован (доступен: fact, case, best, audience, swipe, knowledge)`);
   process.exit(1);
 }
 

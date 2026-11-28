@@ -2,8 +2,8 @@
 
 export type ChunkType = "knowledge" | "case" | "fact" | "best" | "swipe" | "audience";
 
-// Типы, готовые к эмбеддингу/нарезке (без knowledge — ещё не нарезан).
-export const CHUNK_TYPES = ["fact", "case", "best", "audience", "swipe"] as const satisfies readonly ChunkType[];
+// Типы, готовые к эмбеддингу/нарезке.
+export const CHUNK_TYPES = ["fact", "case", "best", "audience", "swipe", "knowledge"] as const satisfies readonly ChunkType[];
 
 export type CanPublish = "yes" | "partial" | "no";
 
@@ -92,6 +92,22 @@ export interface SwipeChunk {
   structure: string[] | null;
   patternsToBorrow: string[] | null;
   doNotCopy: string[] | null;
+  embedding: null;
+}
+
+// Единый чанк `knowledge` (см. docs/Features(steps)/Chunking/knowledge/knowledgePlan.md).
+// Ядро: матчится по `topic`, не по pillar/format. `facts`/`factEmbeddings`/`topic`
+// заполняет LLM-проход; `factsUsed`/износ — заготовка под Этап 5.
+export interface KnowledgeChunk {
+  id: string;
+  type: "knowledge";
+  text: string;
+  topic: string | null;
+  facts: string[] | null;
+  factEmbeddings: number[][] | null;
+  factsUsed: number[] | null;
+  sourcePath: string;
+  depletion: number;
   embedding: null;
 }
 

@@ -1,5 +1,5 @@
 // Универсальный эмбеддинг-скрипт: tsx src/scripts/chunking/embed.ts [type] [--apply]
-// type: fact|case|best|audience|swipe|all. Без --apply — dry-run (без БД и записи).
+// type: fact|case|best|audience|swipe|knowledge|all. Без --apply — dry-run (без БД и записи).
 import "dotenv/config";
 import { config } from "../../config/env";
 import { prisma } from "../../db/prisma";
